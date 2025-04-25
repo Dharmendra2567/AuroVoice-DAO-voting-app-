@@ -17,7 +17,7 @@ const Home = () => {
     handleProposalSubmitted
   } = useVoting();
 
-  if (loading) return <div className="text-center p-6">Loading...</div>;
+  // if (loading) return <div className="text-center p-6">Loading...</div>;
 
   if (error) {
     return (
@@ -44,17 +44,7 @@ const Home = () => {
         <HeaderContent onVoteClicked={scrollToVoting} />
       </div>
 
-      {!account ? (
-        <button
-          onClick={connectWallet}
-          className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
-        >
-          Connect Wallet
-        </button>
-      ) : (
-        <>
-        </>
-      )}
+     
         <div ref={votingRef} className="mt-5 w-full py-5 px-10">
           <ProposalCountDisplay count={proposalItems.length} />
         <VotingInterface

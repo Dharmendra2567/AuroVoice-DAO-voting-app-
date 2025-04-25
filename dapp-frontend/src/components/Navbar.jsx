@@ -1,37 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiHome } from "react-icons/fi"; // home icon
-import { IoIosArrowDown } from "react-icons/io"; // dropdown arrow
+import { FiHome } from "react-icons/fi"; 
+import { IoIosArrowDown } from "react-icons/io"; 
+import { useVoting } from "../contexts/VotingContext";
 
 const Navbar = () => {
-  const [account, setAccount] = useState(null);
   const [error, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const connectWallet = async () => {
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        setAccount(accounts[0]);
-      } else {
-        setError("Please install MetaMask to use this dApp!");
-      }
-    } catch (error) {
-      console.error("Error connecting to MetaMask:", error);
-      setError("Failed to connect to MetaMask");
-    }
-  };
+  const {disconnectWallet, connectWallet,account} = useVoting();
 
-  const disconnectWallet = () => {
-    setAccount(null); // just clears local state
+  const handledisconnectWallet = () => {
+    disconnectWallet();
     setDropdownOpen(false);
   };
-
-  useEffect(() => {
-    connectWallet();
-  }, []);
 
   return (
     <nav className="bg-gradient-to-r from-gray-700 to-purple-700 text-white px-8 py-5 shadow-md">
@@ -67,16 +49,16 @@ const Navbar = () => {
                   <IoIosArrowDown />
                 </>
               ) : (
-                <span>Connect Wallet</span>
+                <span type="button" onClick={()=>connectWallet()}>Connect Wallet</span>
               )}
             </button>
 
             {/* Dropdown Menu */}
-            {dropdownOpen && (
+            {dropdownOpen && account &&  (
               <ul className="absolute right-0 mt-2 w-48 bg-white text-gray-700 rounded-md shadow-lg z-50">
                 <li>
                   <button
-                    onClick={disconnectWallet}
+                    onClick={handledisconnectWallet}
                     className="w-full text-left px-4 py-2 hover:bg-gray-100"
                   >
                     Disconnect Wallet

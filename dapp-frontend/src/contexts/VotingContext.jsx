@@ -48,6 +48,7 @@ const loadGovernanceHistory = async () => {
 
   const connectWallet = async () => {
     try {
+      //it check whther ethereum wallet is installed or not at clients brower side
       if (window.ethereum) {
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts'
@@ -62,7 +63,7 @@ const loadGovernanceHistory = async () => {
       setError("Failed to connect to MetaMask");
     }
   };
-
+ 
 
   const handleVoteSubmitted = async (vote) => {
     try {
@@ -149,9 +150,22 @@ const loadGovernanceHistory = async () => {
     }
   };
   
+  const disconnectWallet = async () => {
+    try {
+      if (account !== null) {  // Compare against null, not "null"
+        setAccount(null);
+        setProposalItems([]);  // Clear proposals
+        setGovernanceHistory([]);  // Clear history
+        setNextProposalId(0);  // Reset proposal counter
+        console.log("Account disconnected successfully");
+      }
+    } catch (err) {
+      console.error("Failed to disconnect:", err);
+    }
+  };
 
   useEffect(() => {
-    connectWallet();
+    // connectWallet();
 
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", (accounts) => {
@@ -187,8 +201,9 @@ const loadGovernanceHistory = async () => {
         error,
         governanceHistory,
         connectWallet,
+        disconnectWallet,
         handleVoteSubmitted,
-        handleProposalSubmitted
+        handleProposalSubmitted,
       }}
     >
       {children}
