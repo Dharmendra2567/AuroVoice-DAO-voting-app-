@@ -1,0 +1,36 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Voting.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Voting {\n    struct Proposal {\n        string description;\n        uint256 yesCount;\n        uint256 noCount;\n        bool executed;\n    }\n\n    mapping(uint256 => Proposal) public proposals;\n    uint256 public proposalCount;\n\n    event ProposalSubmitted(uint256 proposalId, string description);\n    event VoteCast(address voter, uint256 proposalId, uint8 voteOption);\n\n    function submitProposal(string memory description) public {\n        proposalCount = proposalCount+1;\n        proposals[proposalCount] = Proposal({\n            description: description,\n            yesCount: 0,\n            noCount: 0,\n            executed: false\n        });\n        emit ProposalSubmitted(proposalCount, description);\n    }\n\n    function vote(uint256 proposalId, uint8 voteOption) public {\n        require(proposalId > 0 && proposalId <= proposalCount, \"Invalid proposal ID\");\n        require(voteOption == 0 || voteOption == 1, \"Invalid vote option (0: No, 1: Yes)\");\n\n        if (voteOption == 1) {\n            proposals[proposalId].yesCount++;\n        } else {\n            proposals[proposalId].noCount++;\n        }\n        emit VoteCast(msg.sender, proposalId, voteOption);\n    }\n\n    function getProposalCount() public view returns (uint256) {\n        return proposalCount;\n    }\n}"
+    }
+  },
+  "settings": {
+    "evmVersion": "paris",
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

@@ -45,10 +45,7 @@ const GovernanceHistory = () => {
               <Card
                 title={
                   <span className="text-xl font-bold font-sans text-indigo-700">
-                    {
-                    item.title === "" ? "Establishment of a Community-Led Decentralized Learning Platform Offering Free Courses and Skill Development Programs"
-                    : item.title
-                    }
+                    { item.title}
                   </span>
                 }
                 description={

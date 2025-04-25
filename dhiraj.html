@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Us - Professional Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #dfe6e9;
+            text-align: center;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px gray;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        #toggleBtn {
+            background: #007bff;
+        }
+        #toggleBtn:hover {
+            background: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        .header-container {
+            text-align: center;
+            padding: 10px;
+        }
+        .logo {
+            width: 150px;
+            height: auto;
+        }
+        .footer-container {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+            font-size: 0.8em;
+        }
+        .captcha-box {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px dashed #ccc;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .logic-date {
+            font-style: italic;
+            color: #6c757d;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="header-container">
+        <img src="c:\Users\DELL\Downloads\download.png" alt="Logo" class="logo">
+    </div>
+    <h1>Contact Us</h1>
+    <p id="dateDisplay"></p>
+    <p class="logic-date" id="logicDate"></p>
+    <button id="toggleBtn">Hide Form</button>
+    
+    <div class="container" id="formContainer">
+        <form id="contactForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+            <div id="nameError" class="error"></div>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+            <div id="emailError" class="error"></div>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <div id="passwordError" class="error"></div>
+
+            <div class="captcha-box">
+                <label>CAPTCHA:</label>
+                <div id="captcha"></div>
+                <input type="text" id="captchaInput" placeholder="Enter CAPTCHA" required>
+                <div id="captchaError" class="error"></div>
+            </div>
+
+            <label for="country">Country:</label>
+            <select id="country">
+                <option value="">Select Country</option>
+                <option value="usa">United States</option>
+                <option value="canada">Canada</option>
+                <option value="uk">United Kingdom</option>
+            </select>
+
+            <label>Gender:</label>
+            <input type="radio" id="male" name="gender" value="male"> Male
+            <input type="radio" id="female" name="gender" value="female"> Female
+
+            <input type="checkbox" id="subscribe"> Subscribe to newsletter
+
+            <label for="message">Message:</label>
+            <textarea id="message" rows="4"></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    
+    <div id="output"></div>
+    
+    <div class="footer-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/pFCHdKoxheY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        function generateCaptcha() {
+            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let captcha = "";
+            for (let i = 0; i < 6; i++) {
+                captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return captcha;
+        }
+
+        function getLogicDate() {
+            const today = new Date();
+            const logicDate = new Date(today);
+            logicDate.setDate(today.getDate() + 7);
+            return logicDate.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        $(document).ready(function() {
+            $("body").hide().fadeIn(1000);
+            alert("Welcome to Dhiraj's Form!");
+
+            $("#dateDisplay").text("Today's Date: " + new Date().toLocaleDateString());
+            
+            $("#logicDate").text("Next week will be: " + getLogicDate());
+
+            const captcha = generateCaptcha();
+            $("#captcha").text(captcha);
+
+            $("#toggleBtn").click(function() {
+                $("#formContainer").fadeToggle(500, function() {
+                    $("#toggleBtn").text($("#formContainer").is(":visible") ? "Hide Form" : "Show Form");
+                });
+            });
+
+            $("#contactForm").submit(function(event) {
+                event.preventDefault();
+                let isValid = true;
+
+                const name = $("#name").val().trim();
+                if (name.length < 3) {
+                    $("#nameError").text("Name must be at least 3 characters");
+                    isValid = false;
+                } else {
+                    $("#nameError").text("");
+                }
+
+                const email = $("#email").val().trim();
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    $("#emailError").text("Please enter a valid email address");
+                    isValid = false;
+                } else {
+                    $("#emailError").text("");
+                }
+
+                const password = $("#password").val();
+                if (password.length < 6) {
+                    $("#passwordError").text("Password must be at least 6 characters");
+                    isValid = false;
+                } else {
+                    $("#passwordError").text("");
+                }
+
+                const captchaInput = $("#captchaInput").val().toUpperCase();
+                if (captchaInput !== captcha) {
+                    $("#captchaError").text("CAPTCHA does not match");
+                    isValid = false;
+                } else {
+                    $("#captchaError").text("");
+                }
+
+                if (isValid) {
+                    let name = $("#name").val();
+                    let email = $("#email").val();
+                    let password = $("#password").val();
+                    let country = $("#country").val();
+                    let gender = $("input[name='gender']:checked").val();
+                    let subscribe = $("#subscribe").is(":checked") ? "Yes" : "No";
+                    let message = $("#message").val();
+                    gender = gender ? gender : "Not selected";
+
+                    $("#output").html(`
+                        <h2>Entered Details:</h2>
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Password:</strong> ${password.replace(/./g, '*')}</p>
+                        <p><strong>Country:</strong> ${country}</p>
+                        <p><strong>Gender:</strong> ${gender}</p>
+                        <p><strong>Subscribed:</strong> ${subscribe}</p>
+                        <p><strong>Message:</strong> ${message}</p>
+                        <h3>Thank you for submitting the form!</h3>
+                    `).hide().fadeIn(1000);
+
+                    $("#contactForm")[0].reset();
+                    $("#captcha").text(generateCaptcha());
+                }
+            });
+        });
+    </script>
+</body>
+</html>

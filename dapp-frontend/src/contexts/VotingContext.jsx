@@ -11,7 +11,7 @@ export const VotingProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [governanceHistory, setGovernanceHistory] = useState([]);
 
-// Add this function to load governance history
+
 const loadGovernanceHistory = async () => {
   try {
     setLoading(true);
@@ -20,7 +20,7 @@ const loadGovernanceHistory = async () => {
     const count = parseInt(countBN.toString());
     const history = [];
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 1; i <= count; i++) {
       const proposal = await votingContract.proposals(i);
       const yesCount = parseInt(proposal.yesCount.toString());
       const noCount = parseInt(proposal.noCount.toString());
@@ -32,7 +32,7 @@ const loadGovernanceHistory = async () => {
         title: proposal.description,
         description: `Voting ended with ${yesCount} Yes and ${noCount} No votes`,
         outcome: percentageYes >= 50 ? `Approved (${percentageYes}% Yes)` : `Rejected (${percentageYes}% Yes)`,
-        timestamp: new Date().toISOString() // You should add timestamp to your contract if you want real dates
+        timestamp: new Date().toISOString() 
       });
     }
 
@@ -62,38 +62,7 @@ const loadGovernanceHistory = async () => {
       setError("Failed to connect to MetaMask");
     }
   };
-  const loadBlockchainData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const votingContract = await getVotingContract();
-      const countBN = await votingContract.proposalCount();
-      const count = parseInt(countBN.toString());
-      const proposals = [];
-  
-      for (let i = 0; i < count; i++) {
-        const proposal = await votingContract.proposals(i);
-        proposals.push({
-          id: i.toString(),
-          title: proposal.description,
-          yesCount: parseInt(proposal.yesCount.toString()),
-          noCount: parseInt(proposal.noCount.toString()),
-        });
-      }
-  
-      console.log("✅ Loaded proposals:", proposals); // Add this
-  
-      setProposalItems(proposals); // this is the state update
-      setNextProposalId(count);
-      await loadGovernanceHistory();
-    } catch (err) {
-      console.error("Error loading blockchain data:", err);
-      setError("Failed to load blockchain data");
-    } finally {
-      setLoading(false);
-    }
-  };
-  
+
 
   const handleVoteSubmitted = async (vote) => {
     try {
@@ -126,9 +95,8 @@ const loadGovernanceHistory = async () => {
       const tx = await votingContract.submitProposal(proposalTitle);
       await tx.wait();
   
-      // 💡 Instead of waiting — fetch the new proposal directly
       const newProposalIdBN = await votingContract.proposalCount();
-      const newProposalId = parseInt(newProposalIdBN.toString()) - 1;
+      const newProposalId = parseInt(newProposalIdBN.toString()) ;
       const proposal = await votingContract.proposals(newProposalId);
   
       const newProposal = {
@@ -141,11 +109,41 @@ const loadGovernanceHistory = async () => {
       setProposalItems((prev) => [...prev, newProposal]);
       setNextProposalId((prev) => prev + 1);
   
-      // You can still call loadBlockchainData if needed for safety
-      // await loadBlockchainData();
     } catch (err) {
       console.error("Proposal submission error:", err);
       alert("Error submitting proposal.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const loadBlockchainData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const votingContract = await getVotingContract();
+      const countBN = await votingContract.proposalCount();
+      const count = parseInt(countBN.toString());
+      const proposals = [];
+  
+      for (let i = 1; i <= count; i++) {
+        const proposal = await votingContract.proposals(i);
+        proposals.push({
+          id: i.toString(),
+          title: proposal.description,
+          yesCount: parseInt(proposal.yesCount.toString()),
+          noCount: parseInt(proposal.noCount.toString()),
+        });
+      }
+  
+      console.log("✅ Loaded proposals:", proposals);
+  
+      setProposalItems(proposals); 
+      setNextProposalId(count);
+      await loadGovernanceHistory();
+    } catch (err) {
+      console.error("Error loading blockchain data:", err);
+      setError("Failed to load blockchain data");
     } finally {
       setLoading(false);
     }

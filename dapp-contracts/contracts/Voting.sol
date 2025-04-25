@@ -16,7 +16,7 @@ contract Voting {
     event VoteCast(address voter, uint256 proposalId, uint8 voteOption);
 
     function submitProposal(string memory description) public {
-        proposalCount++;
+        proposalCount = proposalCount+1;
         proposals[proposalCount] = Proposal({
             description: description,
             yesCount: 0,

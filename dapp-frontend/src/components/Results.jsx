@@ -18,10 +18,8 @@ const Results = ({ results }) => {
                 key={index}
                 className="bg-gradient-to-br from-purple-100 to-white p-4 rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-102                                                              transition-all duration-300 flex justify-between items-center"
               >
-                <span className="font-semibold text-gray-800">{
-                  result.proposal === "" ? "Establishment of a Community-Led Decentralized Learning Platform Offering Free Courses and Skill Development Programs"
-                  : result.proposal}</span>
-                <span className="text-purple-300 font-bold text-lg">{winProbability}% Win Probability</span>
+                <span className="font-semibold text-gray-800">{ result.proposal}</span>
+                <span className="text-purple-500 font-bold text-lg">{winProbability}% Win Probability</span>
               </li>
             );
           })}

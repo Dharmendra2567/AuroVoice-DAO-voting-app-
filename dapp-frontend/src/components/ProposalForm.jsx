@@ -17,7 +17,6 @@ const ProposalForm = ({ onProposalSubmitted }) => {
   return (
     <Card title="Submit a New Proposal" description="Add Description of your proposal">
       <div className="flex flex-col md:flex-row gap-8 items-stretch transition-all duration-500">
-        {/* Left Column: Info Text */}
         <div className="w-full md:w-1/2 bg-gradient-to-br from-purple-300 via-white to-green-50 p-6 rounded-xl shadow-md transition-transform duration-300 ease-in-out hover:scale-105">
           <h2 className="text-2xl font-extrabold text-gray-800 mb-4">Got an Idea?</h2>
           <p className="text-gray-600 text-base">
@@ -25,7 +24,6 @@ const ProposalForm = ({ onProposalSubmitted }) => {
           </p>
         </div>
 
-        {/* Right Column: Proposal Form */}
         <div className="w-full md:w-1/2 bg-white p-6 rounded-xl shadow-2xl transition-transform duration-300 ease-in-out hover:scale-105">
           <label htmlFor="proposalText" className="block text-gray-700 text-sm font-bold mb-2">
             Proposal Details:

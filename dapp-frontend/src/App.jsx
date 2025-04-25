@@ -6,8 +6,6 @@ import Home from "./pages/Home";
 import GovernanceHistory from "./pages/GovernanceHistory";
 import NotFound from "./pages/NotFound";
 
-// ✅ Import the context provider
-// import { BlockchainProvider } from "./contexts/VotingContext";
 import { VotingProvider } from "./contexts/VotingContext";
 
 const App = () => {

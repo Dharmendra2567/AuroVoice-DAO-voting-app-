@@ -54,15 +54,14 @@ const VotingInterface = ({ proposals, onVoteSubmitted, isConnected }) => {
   return (
     <Card title="Vote Now" description="Choose a proposal and make your voice heard.">
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
-        {proposals && proposals.length > 0 ? (
-          proposals.map((proposal) => (
+        {proposals && proposals.length >0 ? (
+          proposals.map((proposal,i) => (
             <div
               key={proposal.id}
               className="rounded-2xl shadow-lg p-6 bg-purple-100 border border-purple-200 hover:shadow-2xl transition duration-300 ease-in-out"
             >
-              <h3 className="text-lg font-semibold text-purple-800 mb-2">{
-              proposal.title===""? "Establishment of a Community-Led Decentralized Learning Platform Offering Free Courses and Skill Development Programs"
-              : proposal.title}</h3>
+              <p>this is id: {proposal.id}</p>
+              <h3 className="text-lg font-semibold text-purple-800 mb-2">{ proposal.title}</h3>
               <div className="flex gap-4 mt-4">
                 <FaThumbsUp className=" cursor-pointer" /> {proposal.yesCount} &nbsp;
                 <FaThumbsDown className=" cursor-pointer" /> {proposal.noCount}
